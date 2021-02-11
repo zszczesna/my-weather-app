@@ -92,5 +92,8 @@ li {
 
 p {
   margin: 0 158px;
+}
+
+p a {
   text-decoration: none;
 }
