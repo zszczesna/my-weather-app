@@ -1,5 +1,3 @@
-//⏰Feature #1
-//In your project, display the current date and time using JavaScript: Tuesday 16:00
 let now = new Date();
 
 function formatDate(currentDate){
@@ -33,102 +31,41 @@ function displayDay(currentDay){
   return dayAndMonth;
 }
 
-
-let currentTime = document.querySelector("#current-time");
-currentTime.innerHTML = formatDate(now);
-
-let dateNow = document.querySelector("#date-now");
-dateNow.innerHTML = displayDay(new Date());
-
-
-//🕵️‍♀️Feature #2
-//Add a search engine, when searching for a city (i.e. Paris), 
-//display the city name on the page after the user submits the form.
-function defaultLocationWeather(response){
-   let cityName = document.querySelector("#city");
-  cityName.innerHTML = response.data.name;
-  let temperature = Math.round(response.data.main.temp);
-  let temperatureValue = document.querySelector("#temperature-value");
-  temperatureValue.innerHTML = temperature;
-  let description = response.data.weather[0].main;
-  let descr = document.querySelector("#description");
-  descr.innerHTML = description;
-  let wind = Math.round(response.data.wind.speed)
-  let windSpeed = document.querySelector("#wind-speed");
-  windSpeed.innerHTML = `${wind} km/h`;
+function displayWeather(response){
+ 
+  document.querySelector("#city").innerHTML = response.data.name;
+  document.querySelector("#temperature-value").innerHTML = Math.round(response.data.main.temp);
+  document.querySelector("#description").innerHTML = response.data.weather[0].main;
+  document.querySelector("#wind-speed").innerHTML = `${Math.round(response.data.wind.speed)} km/h`;
+ 
 }
 
-function showCurrentLocationWeather(){
 
+function showPosition(position){
+    let apiKey = "444dec86065a0dffc920fcea9a0aef12";
+    let apiUrl =  `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${apiKey}&units=metric`;
+    axios.get(apiUrl).then(displayWeather);
+}
+
+function showCurrentLocationWeather(event){
+  event.preventDefault();
   navigator.geolocation.getCurrentPosition(showPosition);
   
 }
 
-function localWeather(response){
-  let cityName = document.querySelector("#city");
-  cityName.innerHTML = response.data.name;
-  let temperature = Math.round(response.data.main.temp);
-  let temperatureValue = document.querySelector("#temperature-value");
-  temperatureValue.innerHTML = temperature;
-  let description = response.data.weather[0].main;
-  let descr = document.querySelector("#description");
-  descr.innerHTML = description;
-  let wind = Math.round(response.data.wind.speed)
-  let windSpeed = document.querySelector("#wind-speed");
-  windSpeed.innerHTML = `${wind} km/h`;
-}
 
-function showPosition(position){
-    let latitude = position.coords.latitude;
-    let longitude = position.coords.longitude;
-    let apiKey = "444dec86065a0dffc920fcea9a0aef12";
-    let apiUrl =  `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${apiKey}&units=metric`;
-    axios.get(apiUrl).then(localWeather);
-}
-
-
-function displayWeather(response){
-   let cityName = document.querySelector("#city");
-  cityName.innerHTML = response.data.name;
-  let temperature = Math.round(response.data.main.temp);
-  let temperatureValue = document.querySelector("#temperature-value");
-  temperatureValue.innerHTML = temperature;
-  let description = response.data.weather[0].main;
-  let descr = document.querySelector("#description");
-  descr.innerHTML = description;
-  let wind = Math.round(response.data.wind.speed)
-  let windSpeed = document.querySelector("#wind-speed");
-  windSpeed.innerHTML = `${wind} km/h`;
-
-}
-
-function search(event){
-  event.preventDefault();
-  let searchInput = document.querySelector("#search-text-input");
+function searchCity(city) {
   let apiKey = "444dec86065a0dffc920fcea9a0aef12";
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${searchInput.value}
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}
   &appid=${apiKey}&units=metric`;
   axios.get(apiUrl).then(displayWeather);
 }
 
-
-
-let apiKey = "444dec86065a0dffc920fcea9a0aef12";
-let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=New York
-&appid=${apiKey}&units=metric`;
-axios.get(apiUrl).then(defaultLocationWeather);
-
-let searchForm = document.querySelector("#search-input");
-searchForm.addEventListener("submit", search);
-
-let currentLocationBtn = document.querySelector("#current-location-btn");
-currentLocationBtn.addEventListener("click", showCurrentLocationWeather);
-
-
-//🙀Bonus Feature
-//Display a fake temperature (i.e 17) in Celsius and add a link to convert it to Fahrenheit. 
-//When clicking on it, it should convert the temperature to Fahrenheit. When clicking on Celsius, 
-//it should convert it back to Celsius.
+function handleSubmit(event) {
+  event.preventDefault();
+  let city = document.querySelector("#search-text-input").value;
+  searchCity(city);
+}
 
  function changeToCelsius(event){
    event.preventDefault();
@@ -142,11 +79,25 @@ currentLocationBtn.addEventListener("click", showCurrentLocationWeather);
      temperature.innerHTML = Math.round(temperature.innerHTML*9/5+32);
  }
 
- let fahrenheitUnit = document.querySelector("#fahrenheit-unit");
- let celsiusUnit = document.querySelector("#celsius-unit");
+
+let searchForm = document.querySelector("#search-input");
+searchForm.addEventListener("submit", handleSubmit);
+
+let currentLocationBtn = document.querySelector("#current-location-btn");
+currentLocationBtn.addEventListener("click", showCurrentLocationWeather);
+
+let currentTime = document.querySelector("#current-time");
+currentTime.innerHTML = formatDate(now);
+
+let dateNow = document.querySelector("#date-now");
+dateNow.innerHTML = displayDay(new Date());
 
 
- celsiusUnit.addEventListener("click", changeToCelsius);
- fahrenheitUnit.addEventListener("click", changeToFahrenheit);
+let fahrenheitUnit = document.querySelector("#fahrenheit-unit");
+let celsiusUnit = document.querySelector("#celsius-unit");
 
+celsiusUnit.addEventListener("click", changeToCelsius);
+fahrenheitUnit.addEventListener("click", changeToFahrenheit);
+
+searchCity("New York");
  
