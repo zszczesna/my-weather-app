@@ -89,3 +89,8 @@ li {
   margin: 20px auto;
   max-width: 800px;
 }
+
+p {
+  text-align: center;
+  text-decoration: none;
+}
