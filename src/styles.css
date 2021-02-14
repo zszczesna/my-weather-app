@@ -24,16 +24,17 @@ li {
   font-weight: 100;
 }
 
-#description {
+.description {
   font-size: 22px;
 }
 
-#date-now,
-#wind-speed {
+.date-now,
+.wind-speed,
+.humidity {
   font-size: 19px;
 }
 
-#current-time {
+.current-time {
   font-size: 22px;
 }
 
@@ -74,7 +75,7 @@ li {
   text-decoration: none;
 }
 
-.fa-tint {
+.fa-water {
   color: #5eaaa8;
 }
 
@@ -90,11 +91,16 @@ li {
   max-width: 800px;
 }
 
-p {
+small {
   margin: 0 158px;
   font-size: 12px;
 }
 
-p a {
+small a {
   text-decoration: none;
+}
+
+small a:hover {
+  color: #161d6f;
+  text-decoration: underline;
 }
