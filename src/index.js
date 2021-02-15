@@ -1,43 +1,46 @@
+function formatDate(timestamp){
 let now = new Date();
-
-function formatDate(currentDate){
 let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-let day = days[currentDate.getDay()];
+let day = days[now.getDay()];
 
-let hours = currentDate.getHours();
+let hours = now.getHours();
 if (hours<10){
   hours = `0${hours}`;
 }
 
-let minutes =currentDate.getMinutes();
+let minutes =now.getMinutes();
 if (minutes<10){
   minutes = `0${minutes}`;
 }
 
-let date = `${day}, ${hours}:${minutes}`;
-return date;
+return `${day}, ${hours}:${minutes}`;
 }
 
 
-function displayDay(currentDay){
-  let day = currentDay.getDate();
+function displayDay(timestamp){
+  let now = new Date();
+  let day = now.getDate();
   if (day<10){
   day = `0${day}`;
 }
   months = ["01","02","03","04","05","06","07","08","09","10","11","12"];
-  let month = months[currentDay.getMonth()];
+  let month = months[now.getMonth()];
   
-  let dayAndMonth = `${day}/${month}`;
-  return dayAndMonth;
+  return `${day}/${month}`;
 }
 
 function displayWeather(response){
   
   document.querySelector("#city").innerHTML = response.data.name;
   document.querySelector("#temperature-value").innerHTML = Math.round(response.data.main.temp);
-  document.querySelector("#description").innerHTML = response.data.weather[0].main;
+  document.querySelector("#description").innerHTML = response.data.weather[0].description;
   document.querySelector("#humidity").innerHTML = `${response.data.main.humidity}%`;
   document.querySelector("#wind-speed").innerHTML = `${Math.round(response.data.wind.speed)} km/h`;
+  document.querySelector("#current-time").innerHTML = formatDate(response.data.dt*1000);
+  document.querySelector("#date-now").innerHTML = displayDay(response.data.dt*1000);
+  let weatherIcon = document.querySelector("#weather-icon");
+  weatherIcon.setAttribute("src",`http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`);
+  weatherIcon.setAttribute("alt",response.data.weather[0].description);
  
 }
 
@@ -87,18 +90,8 @@ searchForm.addEventListener("submit", handleSubmit);
 let currentLocationBtn = document.querySelector("#current-location-btn");
 currentLocationBtn.addEventListener("click", showCurrentLocationWeather);
 
-let currentTime = document.querySelector("#current-time");
-currentTime.innerHTML = formatDate(now);
+document.querySelector("#celsius-unit").addEventListener("click", changeToCelsius);
+document.querySelector("#fahrenheit-unit").addEventListener("click", changeToFahrenheit);
 
-let dateNow = document.querySelector("#date-now");
-dateNow.innerHTML = displayDay(new Date());
-
-
-let fahrenheitUnit = document.querySelector("#fahrenheit-unit");
-let celsiusUnit = document.querySelector("#celsius-unit");
-
-celsiusUnit.addEventListener("click", changeToCelsius);
-fahrenheitUnit.addEventListener("click", changeToFahrenheit);
-
-searchCity("New York");
+searchCity("Konin");
  
