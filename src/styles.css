@@ -98,8 +98,18 @@ li {
   color: #c7cfb7;
 }
 
+.active {
+  color: #111;
+  cursor: default;
+  text-decoration: none;
+}
+
+.active:hover {
+  text-decoration: none;
+  color: #111;
+}
+
 small {
-  /*text-align: center;*/
   font-size: 12px;
 }
 

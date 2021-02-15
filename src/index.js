@@ -1,5 +1,6 @@
 function formatDate(timestamp){
 let now = new Date();
+
 let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 let day = days[now.getDay()];
 
@@ -19,6 +20,7 @@ return `${day}, ${hours}:${minutes}`;
 
 function displayDay(timestamp){
   let now = new Date();
+
   let day = now.getDate();
   if (day<10){
   day = `0${day}`;
@@ -34,10 +36,15 @@ function displayWeather(response){
   document.querySelector("#city").innerHTML = response.data.name;
   document.querySelector("#temperature-value").innerHTML = Math.round(response.data.main.temp);
   document.querySelector("#description").innerHTML = response.data.weather[0].description;
+
+  celsiusTemperature = response.data.main.temp;
+
   document.querySelector("#humidity").innerHTML = `${response.data.main.humidity}%`;
   document.querySelector("#wind-speed").innerHTML = `${Math.round(response.data.wind.speed)} km/h`;
+
   document.querySelector("#current-time").innerHTML = formatDate(response.data.dt*1000);
   document.querySelector("#date-now").innerHTML = displayDay(response.data.dt*1000);
+
   let weatherIcon = document.querySelector("#weather-icon");
   weatherIcon.setAttribute("src",`http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`);
   weatherIcon.setAttribute("alt",response.data.weather[0].description);
@@ -71,18 +78,25 @@ function handleSubmit(event) {
   searchCity(city);
 }
 
- function changeToCelsius(event){
-   event.preventDefault();
-   let temperature = document.querySelector("#temperature-value");
-   temperature.innerHTML = Math.round((temperature.innerHTML - 32) * 5/9);
- }
 
  function changeToFahrenheit(event){
-   event.preventDefault();
-         let temperature = document.querySelector("#temperature-value");
-     temperature.innerHTML = Math.round(temperature.innerHTML*9/5+32);
+     event.preventDefault();
+     let temperature = document.querySelector("#temperature-value");
+     celsiusUnit.classList.remove("active");
+    fahrenehitUnit.classList.add("active");
+     fahrenheitTemperature = Math.round(celsiusTemperature*9/5+32);
+     temperature.innerHTML = fahrenheitTemperature;
  }
 
+  function changeToCelsius(event){
+   event.preventDefault();
+   celsiusUnit.classList.add("active");
+   fahrenehitUnit.classList.remove("active");
+   let temperature = document.querySelector("#temperature-value");
+   temperature.innerHTML = Math.round(celsiusTemperature);
+ }
+
+let celsiusTemperature = null;
 
 let searchForm = document.querySelector("#search-input");
 searchForm.addEventListener("submit", handleSubmit);
@@ -90,8 +104,10 @@ searchForm.addEventListener("submit", handleSubmit);
 let currentLocationBtn = document.querySelector("#current-location-btn");
 currentLocationBtn.addEventListener("click", showCurrentLocationWeather);
 
-document.querySelector("#celsius-unit").addEventListener("click", changeToCelsius);
-document.querySelector("#fahrenheit-unit").addEventListener("click", changeToFahrenheit);
+let celsiusUnit = document.querySelector("#celsius-unit");
+celsiusUnit.addEventListener("click", changeToCelsius);
+let fahrenehitUnit = document.querySelector("#fahrenheit-unit");
+fahrenehitUnit.addEventListener("click", changeToFahrenheit);
 
 searchCity("Konin");
  
