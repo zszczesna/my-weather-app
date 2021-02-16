@@ -9,12 +9,13 @@ h1 {
   font-weight: 100;
   line-height: 50px;
   margin: 0;
+  margin-top: 15px;
 }
 
 ul {
   text-align: center;
   margin: 0 auto;
-  padding: 0 0 0 0px;
+  padding: 0;
 }
 
 li {
@@ -26,7 +27,7 @@ li {
 
 .weather-app-wrapper {
   margin: 20px auto;
-  max-width: 800px;
+  max-width: 600px;
 }
 
 .weather-app {
@@ -64,12 +65,14 @@ li {
 
 .btn-info {
   margin: 15px 0;
+  padding: 4px 8px;
+  margin-left: 10px;
 }
 
 .weather-icon {
-  margin: 0 0 0 0;
+  margin: 0;
   padding: 0;
-  width: 12%;
+  width: 20%;
 }
 
 .temperature {
@@ -107,6 +110,31 @@ li {
 .active:hover {
   text-decoration: none;
   color: #111;
+}
+
+.weather-forecast {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 13px;
+  color: #222831;
+  font-weight: 400;
+}
+
+.weather-forecast h3 {
+  font-size: 14px;
+  line-height: 15px;
+  padding-top: 7px;
+}
+
+.weather-forecast img {
+  display: block;
+  margin: 0 auto;
+  height: 48px;
+  width: 48px;
+}
+
+.weather-forecast-temperature {
+  line-height: 15px;
 }
 
 small {

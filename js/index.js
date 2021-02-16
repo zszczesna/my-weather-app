@@ -1,25 +1,15 @@
 function formatDate(timestamp){
-let now = new Date();
+let now = new Date(timestamp);
 
 let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 let day = days[now.getDay()];
 
-let hours = now.getHours();
-if (hours<10){
-  hours = `0${hours}`;
-}
-
-let minutes =now.getMinutes();
-if (minutes<10){
-  minutes = `0${minutes}`;
-}
-
-return `${day}, ${hours}:${minutes}`;
+return `${day}, ${displayHours(timestamp)}`;
 }
 
 
 function displayDay(timestamp){
-  let now = new Date();
+  let now = new Date(timestamp);
 
   let day = now.getDate();
   if (day<10){
@@ -31,6 +21,20 @@ function displayDay(timestamp){
   return `${day}/${month}`;
 }
 
+function displayHours(timestamp){
+    let date = new Date(timestamp);
+    let hours = date.getHours();
+    if(hours < 10){
+        hours = `0${hours}`
+    }
+    let minutes = date.getMinutes();
+    if(minutes<10){
+        minutes = `0${minutes}`;
+    }
+    return `${hours}:${minutes}`;
+}
+
+
 function displayWeather(response){
   
   document.querySelector("#city").innerHTML = response.data.name;
@@ -40,7 +44,7 @@ function displayWeather(response){
   celsiusTemperature = response.data.main.temp;
 
   document.querySelector("#humidity").innerHTML = `${response.data.main.humidity}%`;
-  document.querySelector("#wind-speed").innerHTML = `${Math.round(response.data.wind.speed)} km/h`;
+  document.querySelector("#wind-speed").innerHTML = `${Math.round(response.data.wind.speed*3.6)} km/h`;
 
   document.querySelector("#current-time").innerHTML = formatDate(response.data.dt*1000);
   document.querySelector("#date-now").innerHTML = displayDay(response.data.dt*1000);
@@ -51,11 +55,35 @@ function displayWeather(response){
  
 }
 
+function displayForecast(response){
+      let weatherForecast = document.querySelector("#weather-forecast");
+      weatherForecast.innerHTML = null;
+      let forecast = null;
+      for (let index = 0; index < 6; index++) {
+     forecast = response.data.list[index];
+    weatherForecast.innerHTML += `<div class="col-2 ">
+                        <h3>${displayHours(forecast.dt*1000)}</h3> 
+                        <img src="http://openweathermap.org/img/wn/${forecast.weather[0].icon}@2x.png">
+                        <div class="weather-forecast-temperature">
+                            <strong>${Math.round(forecast.main.temp_max)}°</strong>/${Math.round(forecast.main.temp_min)}°
+                        </div>
+                          <i class="fas fa-water"></i> ${forecast.main.humidity}%
+                          <br />
+                          <i class="fas fa-wind"></i> ${Math.round(forecast.wind.speed*3.6)} km/h
+                    </div>`;
+      }
+
+}
+
+
 
 function showPosition(position){
     let apiKey = "444dec86065a0dffc920fcea9a0aef12";
     let apiUrl =  `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${apiKey}&units=metric`;
     axios.get(apiUrl).then(displayWeather);
+    apiUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${apiKey}&units=metric`;
+    axios.get(apiUrl).then(displayForecast);
+
 }
 
 function showCurrentLocationWeather(event){
@@ -64,12 +92,13 @@ function showCurrentLocationWeather(event){
   
 }
 
-
 function searchCity(city) {
   let apiKey = "444dec86065a0dffc920fcea9a0aef12";
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}
   &appid=${apiKey}&units=metric`;
   axios.get(apiUrl).then(displayWeather);
+  apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
+  axios.get(apiUrl).then(displayForecast);
 }
 
 function handleSubmit(event) {
@@ -106,8 +135,8 @@ currentLocationBtn.addEventListener("click", showCurrentLocationWeather);
 
 let celsiusUnit = document.querySelector("#celsius-unit");
 celsiusUnit.addEventListener("click", changeToCelsius);
+
 let fahrenehitUnit = document.querySelector("#fahrenheit-unit");
 fahrenehitUnit.addEventListener("click", changeToFahrenheit);
 
 searchCity("Konin");
- 

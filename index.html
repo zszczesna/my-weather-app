@@ -17,21 +17,17 @@
         <div class="weather-app-wrapper">
 
         <div class="weather-app">
-    
-            <form id="search-input">
+            <form id="search-input" >
 
         <input type="search" id="search-text-input" placeholder="City search" autofocus="on" autocomplete="off"
             class="form-control form-control-sm shadow-sm" />
-
+               
         <input type="submit" value="🔍" class="btn btn-light shadow-sm" />
-
+        <button id="current-location-btn" class="btn btn-info shadow-sm"> Current Location </button>
     </form>
 
-<input type="button" id="current-location-btn" value="Current Location" class="btn btn-info shadow-sm" />
-
     <h1 id="city"></h1>
-
-               
+           
    <ul >
    
        <li class="description" id="description"></li>
@@ -51,13 +47,17 @@
         <li class="current-time" id="current-time"> </li>
 
     </ul>
-    <br />
+    
+        <div class="row weather-forecast" id="weather-forecast">
+
    </div>
+</div>
 <small>This project was coded by <a href="mailto:szczesna.zuzia@gmail.com" target="_blank"> Zuzanna Szczęsna </a>and is
     <a href="https://github.com/zszczesna/my-weather-app" target="_blank">open-sourced on GitHub</a>
     and <a href="https://www.netlify.com/" target="_blank">hosted on Netlify</a></small>
-</div>
-<script src="src/index.js"></script>
+
+<script src="js/index.js"></script>
+   </div>
    </div>
 </body>
 </html>
