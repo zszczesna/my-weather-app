@@ -124,6 +124,7 @@ li {
   font-size: 14px;
   line-height: 15px;
   padding-top: 7px;
+  margin: 0;
 }
 
 .weather-forecast img {

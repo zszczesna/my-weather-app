@@ -139,4 +139,4 @@ celsiusUnit.addEventListener("click", changeToCelsius);
 let fahrenehitUnit = document.querySelector("#fahrenheit-unit");
 fahrenehitUnit.addEventListener("click", changeToFahrenheit);
 
-searchCity("Konin");
+searchCity("San Francisco");
